@@ -31,6 +31,7 @@ Great for a rails app but can be used for any ruby app.
     "VERSION",
     "lib/settings_tree.rb",
     "lib/settings_tree/settings_holder.rb",
+    "settings-tree.gemspec",
     "spec/settings-tree_spec.rb",
     "spec/settings_holder_spec.rb",
     "spec/spec_helper.rb",
