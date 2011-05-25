@@ -1,0 +1,42 @@
+# YAML private config file
+# http://kpumuk.info/ruby-on-rails/flexible-application-configuration-in-ruby-on-rails/
+
+# XXX Beware ! This YAML : indention with spaces only ! XXX
+
+
+####### Common / default values #######
+defaults:
+  root_url: localhost:3000
+  public_access: true
+  
+  infos:
+    company_name: 'Acme'
+    app_name: 'Coffe maker'
+    copyright_starting_year: 2011
+    legend: 'A superb app which does ...'
+  
+  engine:
+    # How many workers we want :
+    workers_count: 3
+    # Should workers be launched and stopped automatically when launching/stopping the application ?
+    # Workers sometimes need to be launched separately (ex. delayed_job). This remove the hassle.
+    auto_manage_workers: true
+    # Should the thread which will launch the workers output in a file or in the same standard output as the current application ?
+    # Should be usually set to true (in a file) to avoid trace confusion.
+    # Put this to "false" if you want to debug the workers automatic launch or see what happen.
+    auto_manage_workers_redirect_output: true
+  
+
+####### production environment #######
+production:
+# nothing special
+
+####### development environment #######
+development:
+  engine:
+    auto_manage_workers_redirect_output: false
+
+####### test environment #######
+test:
+  engine:
+    workers_count: 0

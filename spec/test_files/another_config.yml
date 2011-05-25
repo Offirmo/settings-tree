@@ -1,0 +1,11 @@
+# YAML private config file
+# http://kpumuk.info/ruby-on-rails/flexible-application-configuration-in-ruby-on-rails/
+
+# XXX Beware ! This YAML : indention with spaces only ! XXX
+
+
+####### Common / default values #######
+defaults:
+  guild_name: 'gang'
+  party_size: 4
+  

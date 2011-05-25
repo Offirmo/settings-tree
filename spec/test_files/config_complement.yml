@@ -1,0 +1,17 @@
+# YAML private config file - complement for local adaptations
+
+# XXX Beware ! This YAML : indention with spaces only ! XXX
+
+
+####### Common / default values #######
+defaults:
+  root_url: talkmap.testhost:3000
+  
+  # a new key
+  foo:
+    bar: 42
+  
+####### test environment #######
+test:
+  engine:
+    workers_count: 27
