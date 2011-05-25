@@ -28,6 +28,9 @@ describe "SettingsHolder" do
 		end
 		
 		it "should load all settings" do
+			
+			SettingsHolder.instance.debug_inspect
+			
 			# and now let's query all the expected settings
 			SettingsHolder.instance.get_settings(:web_app).root_url.should == 'localhost:3000'
 			SettingsHolder.instance.get_settings(:web_app).public_access.should be_true

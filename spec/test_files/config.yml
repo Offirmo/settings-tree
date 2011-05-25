@@ -1,7 +1,7 @@
 # YAML private config file
 # http://kpumuk.info/ruby-on-rails/flexible-application-configuration-in-ruby-on-rails/
 
-# XXX Beware ! This YAML : indention with spaces only ! XXX
+# XXX Beware ! This is YAML : indention with spaces only ! XXX
 
 
 ####### Common / default values #######

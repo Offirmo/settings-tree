@@ -15,7 +15,7 @@ Example :
 Those settings are read from a YAML file, like this one :
 
   # YAML private config file
-  # XXX Beware ! This YAML : indention with spaces only ! XXX
+  # XXX Beware ! This is YAML : indention with spaces only ! XXX
   
   ####### Common / default values #######
   defaults:
@@ -60,40 +60,58 @@ Available as a gem
 Isn't it easy ?
 
 == Use
+
+You can uses several, independent 'groups'.
+
 Just register a settings group from a file :
   Settings.register_settings_file('web_app', File.join(File.dirname(__FILE__), "config/config.yml"))
 or for ruby on rails :
+  (in an initializer in config/initializer)
   Settings.register_settings_file('web_app', File.join(::Rails.root.to_s, "config/config.yml"))
-
-And now you can access your settings from anywhere :
-  puts Settings.web_app.infos.company_name
 
 Note : of course, the group name must be a valid keyword, able to be converted to a sym.
 
+And now you can access your settings from anywhere :
+  puts Settings.web_app.infos.company_name
+(considering the YAML file given previously)
+
 You can register any number of group you want :
   Settings.register_settings_file('web_game', File.join(File.dirname(__FILE__), "config/another_config.yml"))
-And then :
-  puts Settings.web_game.guild_name.should == 'gang'
+for this file :
+  ####### Common / default values #######
+  defaults:
+    guild_name: 'gang'
+    party_size: 4
+Giving :
+  puts Settings.web_game.guild_name   => 'gang'
 
-It's common to have settings that you don't want to stay under version control (accounts, passwords).
-A solution is to use a complementary file not under version control. Just use :
+It's common to have settings that you don't want under version control (accounts, passwords).
+A solution is to use a complementary file not under version control (gitignore). Just use :
   Settings.register_settings_file('web_app', File.join(File.dirname(__FILE__), "config/config_complement.yml"))
-And data will be merged, the new one taking precedence in case of conflicts.
+Since the 'web_app' group already exists, data will be merged, the new one taking precedence in case of conflicts. (Precedence is set according to the order of declaration.)
+(All the source files are memorized, this is a complement, not a replacement.)
 
 In case you want to reload the settings, you have two functions for that :
   Settings.reload_all
   Settings.reload_group('web_app')
+(You may want to do that in development mode)
 
 == Advanced use
 Note : since those functions are rarely used, they don't have 'Settings.' shortcuts. Don't mind, it's the same.
 === Environment
-In a rails app, the environment will be taken automatically from 'Rails.env'. If not under a rails app or if the environment is not available, set it manually :
+In a rails app, the environment will be taken automatically from 'Rails.env'.
+If not under a rails app or if the environment is not available, you may want to set it manually :
   SettingsHolder.instance.environment = 'test'
-The files will automatically be reloaded to take that into account.
+(The existing files/groups will automatically be reloaded to take that into account.)
 
+=== Reset
 You may also want to reset all the settings (everything will be forgotten) :
   SettingsHolder.instance.reset
-  
+
+=== Debug
+A convenient debug function to see all the settings and their values :
+  SettingsHolder.instance.debug_inspect
+
 == Contributing to settings-tree
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet

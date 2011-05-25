@@ -31,7 +31,18 @@ class SettingsHolder
 		initialize
 	end
 	
-	#
+	# a convenience function which displays the datas
+	def debug_inspect
+		puts "*** Current settings :"
+		#puts @settings_list.inspect
+		@settings_list.each do |key, value|
+			puts "Settings.#{key}."
+			@settings_list[key][:data].debug_inspect(1)
+		end
+	end
+	
+	# Register a source file for a group.
+	# The group will be created if not already existing.
 	def register_settings_file(name, file)
 		
 		group_just_created = false
@@ -55,6 +66,7 @@ class SettingsHolder
 		return res
 	end
 	
+	# Return this group of settings as an openstruct
 	def get_settings(name)
 		#puts name.inspect
 		#puts @settings_list.inspect
