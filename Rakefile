@@ -16,9 +16,14 @@ Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "settings-tree"
   gem.homepage = "http://github.com/Offirmo/settings-tree"
-  gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.license = "CC0 1.0"
+  gem.summary = "Simple, arborescent settings structure from a YAML file."
+  gem.description = <<-EOF
+This gem offers you a convenient settings structure for parameterizing your application.
+Those settings are read from a YAML file.
+Inheritance of settings (like in development modes) and multiple settings groups are available.
+Great for a rails app but can be used for any ruby app.
+EOF
   gem.email = "offirmo.net@gmail.com"
   gem.authors = ["Offirmo"]
   # dependencies defined in Gemfile
