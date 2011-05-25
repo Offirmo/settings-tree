@@ -1,7 +1,99 @@
 = settings-tree
 
-Description goes here.
+== Introduction
 
+This gem offers you a convenient settings structure for parameterizing your applications.
+
+The good things over similar gems is the ability to have deep, recursive structures and the ability to have 'specialized' config according to the environment.
+
+Example :
+
+  Settings.web_app.infos.company_name     => 'Acme'
+  Settings.web_app.infos.app_name         => 'Coffe maker'
+  Settings.web_app.engine.workers_count   => 3
+
+Those settings are read from a YAML file, like this one :
+
+  # YAML private config file
+  # XXX Beware ! This YAML : indention with spaces only ! XXX
+  
+  ####### Common / default values #######
+  defaults:
+    root_url: localhost:3000
+    public_access: true
+    
+    infos:
+      company_name: 'Acme'
+      app_name: 'Coffe maker'
+      copyright_starting_year: 2011
+      legend: 'A superb app which does ...'
+    
+    engine:
+      workers_count: 3
+      auto_manage_workers: true
+      auto_manage_workers_redirect_output: true
+  
+  ####### production environment #######
+  production:
+  # nothing special
+  
+  ####### development environment #######
+  development:
+    engine:
+      auto_manage_workers_redirect_output: false
+  
+  ####### test environment #######
+  test:
+    engine:
+      workers_count: 0
+
+Note : the settings must reside under a root named 'defaults'. Other roots ('production', 'development'...) will be picked depending on the environment. (more about thet later)
+
+This gem has more good features, keep reading for more.
+
+Ideas taken from : http://kpumuk.info/ruby-on-rails/flexible-application-configuration-in-ruby-on-rails/
+
+== Installation
+Available as a gem
+  gem 'settings-tree'
+  
+Isn't it easy ?
+
+== Use
+Just register a settings group from a file :
+  Settings.register_settings_file('web_app', File.join(File.dirname(__FILE__), "config/config.yml"))
+or for ruby on rails :
+  Settings.register_settings_file('web_app', File.join(::Rails.root.to_s, "config/config.yml"))
+
+And now you can access your settings from anywhere :
+  puts Settings.web_app.infos.company_name
+
+Note : of course, the group name must be a valid keyword, able to be converted to a sym.
+
+You can register any number of group you want :
+  Settings.register_settings_file('web_game', File.join(File.dirname(__FILE__), "config/another_config.yml"))
+And then :
+  puts Settings.web_game.guild_name.should == 'gang'
+
+It's common to have settings that you don't want to stay under version control (accounts, passwords).
+A solution is to use a complementary file not under version control. Just use :
+  Settings.register_settings_file('web_app', File.join(File.dirname(__FILE__), "config/config_complement.yml"))
+And data will be merged, the new one taking precedence in case of conflicts.
+
+In case you want to reload the settings, you have two functions for that :
+  Settings.reload_all
+  Settings.reload_group('web_app')
+
+== Advanced use
+Note : since those functions are rarely used, they don't have 'Settings.' shortcuts. Don't mind, it's the same.
+=== Environment
+In a rails app, the environment will be taken automatically from 'Rails.env'. If not under a rails app or if the environment is not available, set it manually :
+  SettingsHolder.instance.environment = 'test'
+The files will automatically be reloaded to take that into account.
+
+You may also want to reset all the settings (everything will be forgotten) :
+  SettingsHolder.instance.reset
+  
 == Contributing to settings-tree
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
