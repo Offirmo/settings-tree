@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{settings-tree}
-  s.version = "0.2.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Offirmo}]
-  s.date = %q{2011-05-25}
+  s.date = %q{2011-05-31}
   s.description = %q{This gem offers you a convenient settings structure for parameterizing your application.
 Those settings are read from a YAML file.
 Inheritance of settings (like in development modes) and multiple settings groups are available.
