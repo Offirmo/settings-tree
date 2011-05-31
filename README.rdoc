@@ -8,8 +8,11 @@ The good things over similar gems is the ability to have deep, recursive structu
 
 Example :
 
+  Settings.web_app.root_url               => 'localhost:3000'
+  
   Settings.web_app.infos.company_name     => 'Acme'
   Settings.web_app.infos.app_name         => 'Coffe maker'
+  
   Settings.web_app.engine.workers_count   => 3
 
 Those settings are read from a YAML file, like this one :
@@ -47,46 +50,44 @@ Those settings are read from a YAML file, like this one :
     engine:
       workers_count: 0
 
-Note : the settings must reside under a root named 'defaults'. Other roots ('production', 'development'...) will be picked depending on the environment. (more about thet later)
+The common settings reside under a root named 'defaults'. Other roots ('production', 'development'...) will be picked depending on the environment. (more about that later)
 
-This gem has more good features, keep reading for more.
+This gem has more good features, keep reading.
 
 Ideas taken from : http://kpumuk.info/ruby-on-rails/flexible-application-configuration-in-ruby-on-rails/
 
 == Installation
-Available as a gem
+Available as a gem in rubygems, the default gem repository :
   gem 'settings-tree'
-  
-Isn't it easy ?
+Isn't that easy ? (Thank you jeweler for making everything so easy)
 
 == Use
 
 You can uses several, independent 'groups'.
 
 Just register a settings group from a file :
-  Settings.register_settings_file('web_app', File.join(File.dirname(__FILE__), "config/config.yml"))
+  Settings.register_settings_file('web_app', File.join(File.dirname(__FILE__), "config/config_web_app.yml"))
 or for ruby on rails :
-  (in an initializer in config/initializer)
-  Settings.register_settings_file('web_app', File.join(::Rails.root.to_s, "config/config.yml"))
-
+  (put this line in an initializer in config/initializer)
+  Settings.register_settings_file('web_app', File.join(::Rails.root.to_s, "config/config_web_app.yml"))
 Note : of course, the group name must be a valid keyword, able to be converted to a sym.
 
 And now you can access your settings from anywhere :
-  puts Settings.web_app.infos.company_name
+  Settings.web_app.infos.company_name     => 'Acme'
 (considering the YAML file given previously)
 
 You can register any number of group you want :
-  Settings.register_settings_file('web_game', File.join(File.dirname(__FILE__), "config/another_config.yml"))
-for this file :
+  Settings.register_settings_file('web_game', File.join(File.dirname(__FILE__), "config/config_web_game.yml"))
+example, with this file :
   ####### Common / default values #######
   defaults:
     guild_name: 'gang'
     party_size: 4
-Giving :
+gives :
   puts Settings.web_game.guild_name   => 'gang'
 
 It's common to have settings that you don't want under version control (accounts, passwords).
-A solution is to use a complementary file not under version control (gitignore). Just use :
+A solution is to use a complementary file not under version control (thanks to a gitignore for example). Just use :
   Settings.register_settings_file('web_app', File.join(File.dirname(__FILE__), "config/config_complement.yml"))
 Since the 'web_app' group already exists, data will be merged, the new one taking precedence in case of conflicts. (Precedence is set according to the order of declaration.)
 (All the source files are memorized, this is a complement, not a replacement.)
@@ -94,14 +95,14 @@ Since the 'web_app' group already exists, data will be merged, the new one takin
 In case you want to reload the settings, you have two functions for that :
   Settings.reload_all
   Settings.reload_group('web_app')
-(You may want to do that in development mode)
+(You may need that in development mode)
 
 == Advanced use
 Note : since those functions are rarely used, they don't have 'Settings.' shortcuts. Don't mind, it's the same.
 === Environment
 In a rails app, the environment will be taken automatically from 'Rails.env'.
 If not under a rails app or if the environment is not available, you may want to set it manually :
-  SettingsHolder.instance.environment = 'test'
+  SettingsHolder.instance.set_environment('test')
 (The existing files/groups will automatically be reloaded to take that into account.)
 
 === Reset

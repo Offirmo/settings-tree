@@ -77,11 +77,16 @@ class SettingsHolder
 		end
 	end
 	
-	def environment=(env)
+	# Set the environment to be used for conditional settings.
+	def set_environment(env)
 		@environment = env
 		
 		# need to reload all
 		reload_all
+	end
+	# same same
+	def environment=(env)
+		set_environment(env)
 	end
 	
 	def reload_all
@@ -182,16 +187,17 @@ class SettingsHolder
 			case src[:type]
 			when :file
 				begin
-					   complete_config = YAML.load_file( src[:value] ) || {}
-					    default_config = complete_config['defaults'] || {}
+					complete_config    = YAML.load_file( src[:value] ) || {}
+					default_config     = complete_config['defaults'] || {}
 					specialized_config = @environment.nil? ? {} : (complete_config[@environment] || {})
 					
 					data = default_config.deep_merge(specialized_config)
 				rescue Errno::ENOENT => e
 					# no file, classic error.
-					# resend
+					# resend as is
 					raise e
 				rescue Exception => e
+					# unexpected error : add details.
 					#puts e.inspect
 					raise RuntimeError, "XXX There was a problem in parsing the file #{src[:value]}. Please investigate... #{e.message}"
 				end
@@ -201,6 +207,5 @@ class SettingsHolder
 			
 			return data
 		end
-		
 		
 end

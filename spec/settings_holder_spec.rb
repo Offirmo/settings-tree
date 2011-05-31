@@ -57,7 +57,7 @@ describe "SettingsHolder" do
 			SettingsHolder.instance.environment.should be_nil
 			SettingsHolder.instance.get_settings(:web_app).engine.auto_manage_workers_redirect_output.should == true
 			# change environment (settings are automatically reloaded)
-			SettingsHolder.instance.environment = 'development'
+			SettingsHolder.instance.set_environment('development')
 			# after
 			SettingsHolder.instance.environment.should == 'development'
 			SettingsHolder.instance.get_settings(:web_app).engine.auto_manage_workers_redirect_output.should == false
@@ -68,7 +68,7 @@ describe "SettingsHolder" do
 			SettingsHolder.instance.get_settings(:web_app).engine.auto_manage_workers_redirect_output.should == false
 			SettingsHolder.instance.get_settings(:web_app).engine.workers_count.should == 3
 			# change environment (settings are automatically reloaded)
-			SettingsHolder.instance.environment = 'test'
+			SettingsHolder.instance.set_environment('test')
 			# after
 			SettingsHolder.instance.environment.should == 'test'
 			SettingsHolder.instance.get_settings(:web_app).engine.auto_manage_workers_redirect_output.should == true
